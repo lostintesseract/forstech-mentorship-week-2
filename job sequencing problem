@@ -1,0 +1,45 @@
+/*
+struct Job 
+{ 
+    int id;	 // Job Id 
+    int dead; // Deadline of job 
+    int profit; // Profit if job is over before or on deadline 
+};
+*/
+
+class Solution 
+{
+    public:
+    //Function to find the maximum profit and the number of jobs done.
+    static bool cmp(pair<int,int>a,pair<int,int>b){
+                return a.second>b.second;
+    }
+    vector<int> JobScheduling(Job arr[], int n) 
+    { 
+        // your code here
+        vector<pair<int,int>>a;
+        int maxi=INT_MIN;
+        for(int i=0;i<n;i++){
+            a.push_back({arr[i].dead,arr[i].profit});
+            maxi=max(maxi,arr[i].dead);
+        }
+        
+        sort(a.begin(),a.end(),cmp);
+        int ans=0,cnt=0;
+        vector<int>dead_state(maxi+1,-1);
+        for(int i=0;i<n;i++){
+            for(int j=a[i].first-1;j>=0;j--){
+                if(dead_state[j]==-1){
+                    ans+=a[i].second;
+                    cnt++;
+                    dead_state[j]=1;
+                    break;
+                }
+            }
+        }
+        vector<int>res;
+        res.push_back(cnt);
+        res.push_back(ans);
+        return res;
+    } 
+};
